@@ -1,4 +1,4 @@
-package com.superamigos.user;
+package com.superamigos.domain.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
