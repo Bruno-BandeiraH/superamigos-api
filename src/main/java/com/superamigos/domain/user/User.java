@@ -1,6 +1,8 @@
-package com.superamigos.user;
+package com.superamigos.domain.user;
 
-import com.superamigos.user.dto.DadosCadastroUsuario;
+import com.superamigos.domain.comment.Comment;
+import com.superamigos.domain.post.Post;
+import com.superamigos.domain.user.dto.UserCreationData;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -27,10 +29,10 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "author")
     private List<Comment> comments;
 
-    public User(DadosCadastroUsuario dados, PasswordEncoder passwordEncoder) {
-        this.name = dados.name();
-        this.username = dados.username();
-        this.password = passwordEncoder.encode(dados.password());
+    public User(UserCreationData data, PasswordEncoder passwordEncoder) {
+        this.name = data.name();
+        this.username = data.username();
+        this.password = passwordEncoder.encode(data.password());
     }
 
     public User() {
