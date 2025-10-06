@@ -4,6 +4,9 @@ import com.superamigos.domain.comment.dto.CommentCreationData;
 import com.superamigos.domain.post.Post;
 import com.superamigos.domain.user.User;
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "comments")
@@ -17,6 +20,8 @@ public class Comment {
     private User author;
     @ManyToOne
     private Post post;
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
     public Comment(CommentCreationData data, User user, Post post) {
         this.content = data.content();

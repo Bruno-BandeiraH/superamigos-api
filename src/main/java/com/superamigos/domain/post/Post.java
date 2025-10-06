@@ -4,7 +4,10 @@ import com.superamigos.domain.comment.Comment;
 import com.superamigos.domain.post.dto.PostCreationData;
 import com.superamigos.domain.user.User;
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +23,10 @@ public class Post {
     private User author;
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> comments;
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 
     public Post(PostCreationData data, User user) {
         this.content = data.content();
