@@ -9,6 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -33,6 +34,8 @@ public class User implements UserDetails {
         this.name = data.name();
         this.username = data.username();
         this.password = passwordEncoder.encode(data.password());
+        this.posts = new ArrayList<>();
+        this.comments = new ArrayList<>();
     }
 
     public User() {
