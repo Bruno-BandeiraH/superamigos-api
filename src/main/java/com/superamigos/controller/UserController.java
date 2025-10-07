@@ -50,9 +50,15 @@ public class UserController {
         return ResponseEntity.ok(userData);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity findAll() {
         List<UserDetailsData> users = service.findAll();
         return ResponseEntity.ok(users);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity delete(Long id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }
