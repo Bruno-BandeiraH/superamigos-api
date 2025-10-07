@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -45,5 +47,12 @@ public class UserController {
     @GetMapping("/{username}")
     public ResponseEntity findByName(@PathVariable String username) {
         UserDetailsData userData = repository.findByUsername(username);
+        return ResponseEntity.ok(userData);
+    }
+
+    @GetMapping
+    public ResponseEntity findAll() {
+        List<UserDetailsData> users = service.findAll();
+        return ResponseEntity.ok(users);
     }
 }
