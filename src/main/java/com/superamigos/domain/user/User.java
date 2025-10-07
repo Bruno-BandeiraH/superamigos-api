@@ -3,6 +3,7 @@ package com.superamigos.domain.user;
 import com.superamigos.domain.comment.Comment;
 import com.superamigos.domain.post.Post;
 import com.superamigos.domain.user.dto.UserCreationData;
+import com.superamigos.domain.user.dto.UserDetailsData;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -39,6 +40,18 @@ public class User implements UserDetails {
     }
 
     public User() {
+    }
+
+    public void updateData(UserDetailsData data) {
+        if(data.name() != null) {
+            this.name= data.name();
+        }
+        if(data.username() != null) {
+            this.username= data.username();
+        }
+        if(data.statusPhrase() != null) {
+            this.statusPhrase= data.statusPhrase();
+        }
     }
 
     @Override

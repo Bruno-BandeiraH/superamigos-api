@@ -1,4 +1,9 @@
 package com.superamigos.domain.user.dto;
 
-public record UserCreationData(String username, String name, String password) {
+import jakarta.validation.constraints.NotBlank;
+
+public record UserCreationData(
+    @NotBlank String name,
+    @NotBlank String username,
+    @NotBlank String password) {
 }
