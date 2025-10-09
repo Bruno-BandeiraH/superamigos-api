@@ -44,10 +44,22 @@ public class UserController {
         return ResponseEntity.ok(userData);
     }
 
-    @GetMapping("/{username}")
-    public ResponseEntity findByName(@PathVariable String username) {
+    @GetMapping("/username/{username}")
+    public ResponseEntity findByUsername(@PathVariable String username) {
         UserDetailsData userData = repository.findByUsername(username);
         return ResponseEntity.ok(userData);
+    }
+
+    @GetMapping("/name/{name}")
+    public ResponseEntity findByName(@PathVariable String name) {
+        List<UserDetailsData> data = service.findByName(name);
+        return ResponseEntity.ok(data);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity findById(Long id) {
+        User user = service.findById(id);
+        return ResponseEntity.ok(new UserDetailsData(user));
     }
 
     @GetMapping("/all")

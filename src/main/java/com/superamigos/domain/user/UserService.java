@@ -31,6 +31,16 @@ public class UserService {
             .collect(Collectors.toList());
     }
 
+    public User findById(Long id){
+        return repository.findById(id)
+            .orElseThrow(() -> new ValidationException("User with id " + id + " not found"));
+    }
+
+    public List<UserDetailsData> findByName(String name) {
+        return repository.findByName(name)
+            .orElseThrow(() -> new ValidationException("Cannot find any user with the name: " + name));
+    }
+
     public void delete(Long id) {
         User user = repository.findById(id)
             .orElseThrow(() -> new ValidationException("User with id " + id + " not found"));
