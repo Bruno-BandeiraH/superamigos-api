@@ -1,4 +1,6 @@
 package com.superamigos.domain.comment.dto;
 
-public record CommentCreationData(String content) {
+import jakarta.validation.constraints.NotBlank;
+
+public record CommentCreationData(@NotBlank String content) {
 }
