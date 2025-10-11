@@ -2,6 +2,7 @@ package com.superamigos.controller;
 
 import com.superamigos.domain.user.User;
 import com.superamigos.domain.user.UserService;
+import com.superamigos.domain.user.dto.ChangePasswordData;
 import com.superamigos.domain.user.dto.UserCreationData;
 import com.superamigos.domain.user.dto.UserDetailsData;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -37,6 +38,13 @@ public class UserController {
     public ResponseEntity update(@RequestBody @Valid UserDetailsData data) {
         UserDetailsData userData = new UserDetailsData(service.update(data));
         return ResponseEntity.ok(userData);
+    }
+
+    @PutMapping("/password/{id}")
+    @Transactional
+    public ResponseEntity changePassword(@RequestBody @Valid ChangePasswordData data, @PathVariable Long id) {
+        service.changePassword(data, id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/username/{username}")

@@ -1,5 +1,6 @@
 package com.superamigos.domain.user;
 
+import com.superamigos.domain.user.dto.ChangePasswordData;
 import com.superamigos.domain.user.dto.UserCreationData;
 import com.superamigos.domain.user.dto.UserDetailsData;
 import com.superamigos.infra.exceptions.ValidationException;
@@ -53,6 +54,19 @@ public class UserService {
     public UserDetailsData findByUsername(String username) {
         User user = repository.findByUsername(username);
         return new UserDetailsData(user);
+    }
+
+    public void changePassword(ChangePasswordData data, Long id) {
+        User user = repository.findById(id)
+            .orElseThrow(() -> new ValidationException("User with id " + id + " not found"));
+
+        if(!passwordEncoder.matches(data.currentPassword(), user.getPassword())) {
+            throw new ValidationException("Wrong password!");
+        }
+
+        String newPassword = passwordEncoder.encode(data.newPassword());
+        user.setPassword(newPassword);
+        repository.save(user);
     }
 
     public void delete(Long id) {
