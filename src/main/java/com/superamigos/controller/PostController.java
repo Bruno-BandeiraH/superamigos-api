@@ -1,13 +1,10 @@
 package com.superamigos.controller;
 
 import com.superamigos.domain.post.Post;
-import com.superamigos.domain.post.PostRepository;
 import com.superamigos.domain.post.PostService;
 import com.superamigos.domain.post.dto.PostCreationData;
 import com.superamigos.domain.post.dto.PostDetailsData;
 import com.superamigos.domain.post.dto.PostUpdateData;
-import com.superamigos.domain.user.User;
-import com.superamigos.domain.user.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,22 +18,16 @@ import java.util.List;
 @RequestMapping("/posts")
 public class PostController {
 
-    private final PostRepository postRepository;
-    private final UserService userService;
     private final PostService postService;
 
-    public PostController(PostRepository postRepository, UserService userService, PostService postService) {
-        this.postRepository = postRepository;
-        this.userService = userService;
+    public PostController(PostService postService) {
         this.postService = postService;
     }
 
     @PostMapping("/{userId}")
     @Transactional
     public ResponseEntity create(@RequestBody @Valid PostCreationData data, @PathVariable Long userId, UriComponentsBuilder uriBuilder) {
-        User user = userService.findById(userId);
-        Post post = new Post(data, user);
-        postRepository.save(post);
+        Post post = postService.create(data, userId);
         var uri = uriBuilder.path("/posts/{id}").buildAndExpand(post.getId()).toUri();
         return ResponseEntity.created(uri).body(new PostDetailsData(post));
     }
@@ -61,7 +52,8 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteById(Long id) {
+    @Transactional
+    public ResponseEntity deleteById(@PathVariable Long id) {
         postService.deleteById(id);
         return ResponseEntity.noContent().build();
     }

@@ -1,8 +1,11 @@
 package com.superamigos.domain.post;
 
+import com.superamigos.domain.post.dto.PostCreationData;
 import com.superamigos.domain.post.dto.PostDetailsData;
 import com.superamigos.domain.post.dto.PostUpdateData;
+import com.superamigos.domain.user.User;
 import com.superamigos.domain.user.UserRepository;
+import com.superamigos.domain.user.UserService;
 import com.superamigos.infra.exceptions.ValidationException;
 import org.springframework.stereotype.Service;
 
@@ -15,10 +18,18 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final UserService userService;
 
-    public PostService(PostRepository postRepository, UserRepository userRepository) {
+    public PostService(PostRepository postRepository, UserRepository userRepository, UserService userService) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
+        this.userService = userService;
+    }
+
+    public Post create(PostCreationData data, Long userId) {
+        User user = userService.findById(userId);
+        Post post = new Post(data, user);
+        return postRepository.save(post);
     }
 
     public Post findById(Long id) {

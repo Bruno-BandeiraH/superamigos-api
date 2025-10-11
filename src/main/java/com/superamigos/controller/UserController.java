@@ -1,13 +1,11 @@
 package com.superamigos.controller;
 
 import com.superamigos.domain.user.User;
-import com.superamigos.domain.user.UserRepository;
 import com.superamigos.domain.user.UserService;
 import com.superamigos.domain.user.dto.UserCreationData;
 import com.superamigos.domain.user.dto.UserDetailsData;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -15,25 +13,20 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 
-    private final UserRepository repository;
     private final UserService service;
-    private final PasswordEncoder passwordEncoder;
 
-    public UserController(UserRepository repository, PasswordEncoder passwordEncoder, UserService service) {
-        this.repository = repository;
-        this.passwordEncoder = passwordEncoder;
+    public UserController(UserService service) {
         this.service = service;
     }
 
     @PostMapping
     @Transactional
     public ResponseEntity create(@RequestBody @Valid UserCreationData data, UriComponentsBuilder uriBuilder) {
-        User user = new User(data, passwordEncoder);
-        repository.save(user);
-        var uri = uriBuilder.path("/user/{id}").buildAndExpand(user.getId()).toUri();
+        User user = service.create(data);
+        var uri = uriBuilder.path("/users/{id}").buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(uri).body(new UserDetailsData(user));
     }
 
@@ -46,7 +39,7 @@ public class UserController {
 
     @GetMapping("/username/{username}")
     public ResponseEntity findByUsername(@PathVariable String username) {
-        UserDetailsData userData = repository.findByUsername(username);
+        UserDetailsData userData = service.findByUsername(username);
         return ResponseEntity.ok(userData);
     }
 
@@ -57,7 +50,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity findById(Long id) {
+    public ResponseEntity findById(@PathVariable Long id) {
         User user = service.findById(id);
         return ResponseEntity.ok(new UserDetailsData(user));
     }
@@ -69,7 +62,8 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity delete(Long id) {
+    @Transactional
+    public ResponseEntity delete(@PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }

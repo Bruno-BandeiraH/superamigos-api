@@ -1,7 +1,9 @@
 package com.superamigos.domain.user;
 
+import com.superamigos.domain.user.dto.UserCreationData;
 import com.superamigos.domain.user.dto.UserDetailsData;
 import com.superamigos.infra.exceptions.ValidationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,11 +13,17 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository repository) {
+    public UserService(UserRepository repository, PasswordEncoder passwordEncoder) {
         this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
     }
 
+    public User create(UserCreationData data) {
+        User user = new User(data, passwordEncoder);
+        return repository.save(user);
+    }
 
     public UserDetailsData update(UserDetailsData data)  {
         User user = repository.findById(data.id())
@@ -37,8 +45,14 @@ public class UserService {
     }
 
     public List<UserDetailsData> findByName(String name) {
-        return repository.findByName(name)
-            .orElseThrow(() -> new ValidationException("Cannot find any user with the name: " + name));
+        return repository.findByName(name).stream()
+            .map(UserDetailsData::new)
+            .collect(Collectors.toList());
+    }
+
+    public UserDetailsData findByUsername(String username) {
+        User user = repository.findByUsername(username);
+        return new UserDetailsData(user);
     }
 
     public void delete(Long id) {
