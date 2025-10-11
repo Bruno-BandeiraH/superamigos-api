@@ -4,6 +4,7 @@ import com.superamigos.domain.comment.Comment;
 import com.superamigos.domain.comment.CommentService;
 import com.superamigos.domain.comment.dto.CommentCreationData;
 import com.superamigos.domain.comment.dto.CommentDetailsData;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/comments")
+@SecurityRequirement(name = "bearer-key")
 public class CommentController {
 
     private final CommentService commentService;

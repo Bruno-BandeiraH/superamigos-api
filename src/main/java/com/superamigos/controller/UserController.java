@@ -4,6 +4,7 @@ import com.superamigos.domain.user.User;
 import com.superamigos.domain.user.UserService;
 import com.superamigos.domain.user.dto.UserCreationData;
 import com.superamigos.domain.user.dto.UserDetailsData;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users")
+@SecurityRequirement(name = "bearer-key")
 public class UserController {
 
     private final UserService service;

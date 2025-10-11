@@ -5,6 +5,7 @@ import com.superamigos.domain.post.PostService;
 import com.superamigos.domain.post.dto.PostCreationData;
 import com.superamigos.domain.post.dto.PostDetailsData;
 import com.superamigos.domain.post.dto.PostUpdateData;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/posts")
+@SecurityRequirement(name = "bearer-key")
 public class PostController {
 
     private final PostService postService;
