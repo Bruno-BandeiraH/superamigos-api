@@ -45,4 +45,10 @@ public class CommentService {
             .map(CommentDetailsData::new)
             .collect(Collectors.toList());
     }
+
+    public CommentDetailsData findById(Long id) {
+        Comment comment = commentRepository.findById(id)
+            .orElseThrow(() -> new ValidationException("Comment with id: " + id + " not found"));
+        return new CommentDetailsData(comment);
+    }
 }

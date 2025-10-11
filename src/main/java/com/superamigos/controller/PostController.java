@@ -51,6 +51,12 @@ public class PostController {
         return ResponseEntity.ok(posts);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity findById(@PathVariable Long id) {
+        Post post = postService.findById(id);
+        return ResponseEntity.ok(new PostDetailsData(post));
+    }
+
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity deleteById(@PathVariable Long id) {

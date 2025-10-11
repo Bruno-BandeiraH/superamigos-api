@@ -31,16 +31,22 @@ public class CommentController {
         return ResponseEntity.created(uri).body(new CommentDetailsData(comment));
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity deleteById(Long id) {
+    public ResponseEntity deleteById(@PathVariable Long id) {
         commentService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping
-    public ResponseEntity findAllByPostId(Long postId) {
+    @GetMapping("/post/{postId}")
+    public ResponseEntity findAllByPostId(@PathVariable Long postId) {
         List<CommentDetailsData> comments = commentService.findByPostId(postId);
         return ResponseEntity.ok(comments);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity findById(@PathVariable Long id) {
+        CommentDetailsData comment = commentService.findById(id);
+        return ResponseEntity.ok(comment);
     }
 }
