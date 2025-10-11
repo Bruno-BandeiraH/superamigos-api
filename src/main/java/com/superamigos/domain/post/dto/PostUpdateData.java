@@ -1,4 +1,7 @@
 package com.superamigos.domain.post.dto;
 
-public record PostUpdateData(Long id, String content) {
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
+public record PostUpdateData(@NotNull @Positive Long id, String content) {
 }

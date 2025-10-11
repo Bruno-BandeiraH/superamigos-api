@@ -1,4 +1,6 @@
 package com.superamigos.domain.post.dto;
 
-public record PostCreationData(String content) {
+import jakarta.validation.constraints.NotBlank;
+
+public record PostCreationData(@NotBlank String content) {
 }
