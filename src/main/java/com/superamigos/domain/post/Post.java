@@ -19,7 +19,7 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String content;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User author;
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> comments;

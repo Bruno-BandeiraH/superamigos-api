@@ -109,6 +109,9 @@ public class User implements UserDetails {
     }
 
     public void setUsername(String username) {
+        if (username != null && username.trim().length() < 3) {
+            throw new IllegalArgumentException("Username too short");
+        }
         this.username = username;
     }
 
@@ -126,11 +129,11 @@ public class User implements UserDetails {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(name, user.name) && Objects.equals(statusPhrase, user.statusPhrase) && Objects.equals(username, user.username) && Objects.equals(password, user.password);
+        return Objects.equals(id, user.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, statusPhrase, username, password);
+        return Objects.hash(id);
     }
 }
