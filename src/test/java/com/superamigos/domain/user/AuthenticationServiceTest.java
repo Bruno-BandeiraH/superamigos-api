@@ -51,7 +51,7 @@ class AuthenticationServiceTest {
     }
 
     @Test
-    @DisplayName("Should throw esception when user not found")
+    @DisplayName("Should throw exception when user not found")
     void shouldThrowExceptionWhenUserNotFound() {
         // given
         String nonExistentUserName = "abobrinha4";
@@ -61,6 +61,5 @@ class AuthenticationServiceTest {
         assertThatThrownBy(() -> authenticationService.loadUserByUsername(nonExistentUserName))
             .isInstanceOf(UsernameNotFoundException.class)
             .hasMessage("User not found: " + nonExistentUserName);
-
     }
 }
